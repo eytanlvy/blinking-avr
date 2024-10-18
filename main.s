@@ -1,6 +1,6 @@
 .text
-	sbi 0x04, 1
-	sbi 0x05, 1
+	sbi 0x04, 5
+	sbi 0x05, 5
 
 loop:
-	rjmp loop
+	rjmp 1b
