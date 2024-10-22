@@ -1,16 +1,14 @@
-all: main.o program.elf program.hex
+upload: program.hex
+	avrdude -v -patmega328p -carduino -P/dev/ttyACM0 -b115200 -Uflash:w:program.hex
 
-flash :
-	avrdude -patmega328p -carduino -P/dev/ttyACM0 -b115200 -Uflash:w:program.hex
+program.hex: program.elf
+	avr-objcopy -O ihex $^ $@
 
-program.hex :
-	avr-objcopy -O ihex program.elf program.hex
-
-program.elf :
-	avr-ld main.o -o program.elf
+program.elf: main.o
+	avr-ld $^ -o $@
 
 main.o: main.s
-	avr-as main.s -o main.o
+	avr-as $^ -o $@
 
 clean:
-	rm main.o program.elf program.hex
+	rm -f program.* *.o
