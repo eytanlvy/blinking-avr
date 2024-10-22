@@ -1,11 +1,16 @@
-SRC = main.s
-OBJ = main.o
-AS = avr-as
+all: main.o program.elf program.hex
 
-all: $(OBJ)
+flash :
+	avrdude -patmega328p -carduino -P/dev/ttyACM0 -b115200 -Uflash:w:program.hex
 
-$(OBJ): $(SRC)
-	$(AS) $(SRC) -o $(OBJ)
+program.hex :
+	avr-objcopy -O ihex program.elf program.hex
+
+program.elf :
+	avr-ld main.o -o program.elf
+
+main.o: main.s
+	avr-as main.s -o main.o
 
 clean:
-	rm -f $(OBJ)
+	rm main.o program.elf program.hex
