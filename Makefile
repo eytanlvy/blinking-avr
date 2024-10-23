@@ -1,14 +1,22 @@
-upload: program.hex
-	avrdude -v -patmega328p -carduino -P/dev/ttyACM0 -b115200 -Uflash:w:program.hex
+ASSEMBLY_FILE ?= main
 
-program.hex: program.elf
+ifeq ($(MAC), 1)
+    PORT = /dev/tty.usbmodem1101
+else
+    PORT = /dev/ttyACM0
+endif
+
+upload: $(ASSEMBLY_FILE).hex
+	avrdude -v -patmega328p -carduino -P$(PORT) -b115200 -Uflash:w:$(ASSEMBLY_FILE).hex
+
+%.hex: %.elf
 	avr-objcopy -O ihex $^ $@
 
-program.elf: main.o
+%.elf: %.o
 	avr-ld $^ -o $@
 
-main.o: main.s
+%.o: %.s
 	avr-as $^ -o $@
 
 clean:
-	rm -f program.* *.o
+	rm -f *.hex *.elf *.o
