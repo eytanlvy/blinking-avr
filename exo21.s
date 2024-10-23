@@ -4,5 +4,6 @@ loop:
     dec 0x18        ;1 cycle cpu
     brne loop       ;2 cycles cpu si true, 1 cycle cpu si false
                     ;total = 1 + (1+2)*(val_initiale_r24 - 1) + 2 = 3*(val_initiale_r24)
+    cbi 0x05, 5   
 end:
     rjmp end 

@@ -1,7 +1,7 @@
 ASSEMBLY_FILE ?= main
 
 ifeq ($(MAC), 1)
-    PORT = /dev/tty.usbmodem1101
+    PORT = /dev/tty.usbmodem101
 else
     PORT = /dev/ttyACM0
 endif
